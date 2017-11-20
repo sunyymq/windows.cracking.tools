@@ -1,0 +1,29 @@
+var RetAddr
+
+Work:
+eob ToProcess
+run
+
+ToProcess:
+log eip
+cmp eip,765AB590
+je ToWindowProc
+jmp Final
+
+ToWindowProc:
+mov RetAddr,esp
+add RetAddr,4
+mov RetAddr,[RetAddr]
+add RetAddr,4
+mov RetAddr,[RetAddr]
+log RetAddr
+//bpcnd RetAddr, "[esp+8]==0x0111"
+bpl RetAddr, "[esp+8]"
+//bplcnd RetAddr, "[esp+8]", "[esp+8]==0x0111"
+jmp Work
+
+Final:
+MSGYN "Continue?"
+cmp $RESULT,1
+je Work
+ret
